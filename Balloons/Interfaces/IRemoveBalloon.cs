@@ -8,6 +8,6 @@ namespace Balloons.Interfaces
 {
     public interface IRemoveBalloon
     {
-        void Remove(IBalloon balloon);
+        bool Remove(IBalloon balloon);
     }
 }

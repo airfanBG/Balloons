@@ -9,5 +9,6 @@ namespace Balloons.Interfaces
     public interface IGameWriterProvider
     {
         public void WriteLine(string text);
+        public void Write(string text, params object[]? args);
     }
 }

@@ -21,9 +21,16 @@ namespace Balloons.Services.Commands
         {
             string color = arguments[0];
             var balloon=balloonFactory.CreateBalloon(color);
-            removeBalloon.Remove(balloon);
+            var status=removeBalloon.Remove(balloon);
 
-            return $"{color} strike balloon";
+            if (status)
+            {
+                return $"{color} strike balloon";
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

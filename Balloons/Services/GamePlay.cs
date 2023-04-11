@@ -9,12 +9,16 @@ namespace Balloons.Services
 {
     public class GamePlay : IGamePlay
     {
+        private readonly IGameWriterProvider writerProvider;
         private IDictionary<string,IBalloon> _balloons;
         private IDictionary<string,IArrow> _arrows;
-        public GamePlay()
+        private int balloonsCount;
+        private int arrowsCount;
+        public GamePlay(IGameWriterProvider writerProvider)
         {
             _balloons= new Dictionary<string,IBalloon>();
             _arrows= new Dictionary<string,IArrow>();
+            this.writerProvider = writerProvider;
         }
         public void AddArrow(IArrow arrow)
         {
@@ -26,6 +30,8 @@ namespace Balloons.Services
             {
                 _arrows.Add(arrow.Color, arrow);
             }
+            arrowsCount++;
+            writerProvider.WriteLine($"Total arrows: {_arrows.Count}");
         }
 
         public void AddBalloon(IBalloon balloon)
@@ -38,15 +44,26 @@ namespace Balloons.Services
             {
                 _balloons.Add(balloon.Color, balloon);
             }
+            balloonsCount++;
+            writerProvider.WriteLine($"Total balloons: {balloonsCount}");
         }
 
-        public void Remove(IBalloon balloon)
+        public bool Remove(IBalloon balloon)
         {
-            if (_balloons.ContainsKey(balloon.Color))
+            if (_balloons.ContainsKey(balloon.Color)&& _arrows.ContainsKey(balloon.Color))
             {
                 _balloons.Remove(balloon.Color);
+                writerProvider.WriteLine($"Left balloons: {balloonsCount - _balloons.Count}");
+                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows; {_arrows.Count}");
+                return true;
             }
-            
+            else
+            {
+                writerProvider.WriteLine("No arrows!");
+                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows; {_arrows.Count}");
+                return false;
+            }
+
         }
     }
 }

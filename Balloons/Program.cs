@@ -19,5 +19,15 @@ catch (Exception e)
 }
 
 
+public abstract class Animal
+{
+    public string AnimalName { get; set; }
+    public int Legs { get; set; }
+}
+public class Cat : Animal
+{
+}
+public class Snake : Animal
+{
 
-
+}
