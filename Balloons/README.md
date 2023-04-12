@@ -8,3 +8,10 @@ createarrow red 3
 throw red
 
 ```
+
+## Technologies
+**[Ninject](http://www.ninject.org)**</br>
+**[Ninject Factory](https://github.com/ninject/Ninject.Extensions.Factory)**
+
+## Architecture
+Simple DDD architecture in console application. This game is just for students training purpouse
