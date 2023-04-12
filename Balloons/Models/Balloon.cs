@@ -12,7 +12,10 @@ namespace Balloons.Models
         public Balloon(string color)
         {
             Color=color;
+            BalloonId = Guid.NewGuid().ToString();
         }
+        public string BalloonId { get; set; }
         public string Color { get; set; }
+       
     }
 }

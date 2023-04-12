@@ -1,4 +1,5 @@
 ﻿using Balloons.Interfaces;
+using Balloons.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +11,27 @@ namespace Balloons.Services
     public class GamePlay : IGamePlay
     {
         private readonly IGameWriterProvider writerProvider;
-        private IDictionary<string,IBalloon> _balloons;
-        private IDictionary<string,IArrow> _arrows;
+        private readonly IGameplayRandomGenerator gameplayRandomGenerator;
+        private IDictionary<string,List<IBalloon>> _balloons;
+        private IDictionary<string, List<IArrow>> _arrows;
         private int balloonsCount;
         private int arrowsCount;
-        public GamePlay(IGameWriterProvider writerProvider)
+        public GamePlay(IGameWriterProvider writerProvider, IGameplayRandomGenerator gameplayRandomGenerator)
         {
-            _balloons= new Dictionary<string,IBalloon>();
-            _arrows= new Dictionary<string,IArrow>();
+            _balloons= new Dictionary<string, List<IBalloon>>();
+            _arrows= new Dictionary<string, List<IArrow>>();
             this.writerProvider = writerProvider;
+            this.gameplayRandomGenerator = gameplayRandomGenerator;
         }
         public void AddArrow(IArrow arrow)
         {
             if (_arrows.ContainsKey(arrow.Color))
             {
-                _arrows[arrow.Color] = arrow;
+                _arrows[arrow.Color].Add(arrow);
             }
             else
             {
-                _arrows.Add(arrow.Color, arrow);
+                _arrows.Add(arrow.Color, new List<IArrow>() { arrow});
             }
             arrowsCount++;
             writerProvider.WriteLine($"Total arrows: {_arrows.Count}");
@@ -38,11 +41,11 @@ namespace Balloons.Services
         {
             if (_balloons.ContainsKey(balloon.Color))
             {
-                _balloons[balloon.Color] = balloon;
+                _balloons[balloon.Color].Add(balloon);
             }
             else
             {
-                _balloons.Add(balloon.Color, balloon);
+                _balloons.Add(balloon.Color, new List<IBalloon>() { balloon});
             }
             balloonsCount++;
             writerProvider.WriteLine($"Total balloons: {balloonsCount}");
@@ -52,15 +55,34 @@ namespace Balloons.Services
         {
             if (_balloons.ContainsKey(balloon.Color)&& _arrows.ContainsKey(balloon.Color))
             {
-                _balloons.Remove(balloon.Color);
+                //get random index by color list
+                var allBalloons=_balloons[balloon.Color].Count;
+                var allArrows = _arrows[balloon.Color].Count;
+                
+                var balloonIndex= gameplayRandomGenerator.GetNumber(0, allBalloons);
+               
+                var arrowIndex= gameplayRandomGenerator.GetNumber(0, allArrows);
+                var arrow = _arrows[balloon.Color][arrowIndex];
+                if (arrow.ArrowThrownCount<arrow.Accurancy)
+                {
+                    //remove random balloon from list
+                    _balloons[balloon.Color].RemoveAt(balloonIndex);
+                    arrow.ArrowThrownCount++;
+                }
+                else
+                {
+                    _arrows[balloon.Color].RemoveAt(arrowIndex);
+                    return false;
+                }
+
                 writerProvider.WriteLine($"Left balloons: {balloonsCount - _balloons.Count}");
-                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows; {_arrows.Count}");
+                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows: {_arrows.Count}");
                 return true;
             }
             else
             {
                 writerProvider.WriteLine("No arrows!");
-                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows; {_arrows.Count}");
+                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows: {_arrows.Count}");
                 return false;
             }
 

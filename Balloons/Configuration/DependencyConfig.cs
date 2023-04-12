@@ -31,8 +31,7 @@ namespace Balloons.Configuration
 
             Bind<CreateBalloonCommand>().ToSelf().InSingletonScope();
             Bind<CreateArrowCommand>().ToSelf().InSingletonScope();
-
-           
+          
             Bind<ICommandFactory>().ToFactory().InSingletonScope();
             Bind<IBalloonFactory>().ToFactory().InSingletonScope();
             Bind<IArrowFactory>().ToFactory().InSingletonScope();
@@ -50,3 +49,4 @@ namespace Balloons.Configuration
         }
     }
 }
+ 

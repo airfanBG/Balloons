@@ -9,10 +9,15 @@ namespace Balloons.Models
 {
     public class Arrow:IArrow
     {
-        public Arrow(string color)
+        public Arrow(string color, int accurancy)
         {
-            Color= color;
+            Color = color;
+            ArrowId=Guid.NewGuid().ToString();  
+            Accurancy = accurancy;
         }
         public string Color { get; set; }
+        public string ArrowId { get; set; }
+        public int Accurancy { get; set; }
+        public int ArrowThrownCount { get; set; }
     }
 }

@@ -15,19 +15,6 @@ try
 catch (Exception e)
 {
 
-	throw e;
+    throw e;
 }
 
-
-public abstract class Animal
-{
-    public string AnimalName { get; set; }
-    public int Legs { get; set; }
-}
-public class Cat : Animal
-{
-}
-public class Snake : Animal
-{
-
-}

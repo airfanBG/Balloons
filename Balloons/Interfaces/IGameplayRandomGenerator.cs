@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Balloons.Interfaces
 {
-    public interface IArrowFactory
+    public interface IGameplayRandomGenerator
     {
-        IArrow Create(string color, int accurancy);
+        public int GetNumber(int from, int to);
     }
 }

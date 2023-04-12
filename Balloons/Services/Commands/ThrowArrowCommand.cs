@@ -29,7 +29,7 @@ namespace Balloons.Services.Commands
             }
             else
             {
-                return "";
+                return $"{color} missed balloon";
             }
         }
     }

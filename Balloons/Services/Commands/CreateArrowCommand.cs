@@ -19,7 +19,7 @@ namespace Balloons.Services.Commands
         }
         public string Execute(IList<string> arguments)
         {
-            var arrow = arrowFactory.Create(arguments[0]);
+            var arrow = arrowFactory.Create(arguments[0],int.Parse(arguments[1]));
             addArrow.AddArrow(arrow);
             return $"A new arrow with color {arguments[0]} added";
         }

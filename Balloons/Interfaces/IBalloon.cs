@@ -8,5 +8,7 @@ namespace Balloons.Interfaces
 {
     public interface IBalloon:IGameplayObject
     {
+        public string BalloonId { get; set; }
+        
     }
 }

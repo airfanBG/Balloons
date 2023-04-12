@@ -8,5 +8,8 @@ namespace Balloons.Interfaces
 {
     public interface IArrow:IGameplayObject
     {
+        public string ArrowId { get; set; }
+        public int Accurancy { get; set; }
+        public int ArrowThrownCount { get; set; }
     }
 }
