@@ -20,7 +20,7 @@ namespace Balloons.Services.Commands
         public string Execute(IList<string> arguments)
         {
             string color = arguments[0];
-            var balloon=balloonFactory.CreateBalloon(color);
+            var balloon = balloonFactory.CreateBalloon(color, int.Parse(arguments[1]));
             var status=removeBalloon.Remove(balloon);
 
             if (status)

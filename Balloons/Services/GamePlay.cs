@@ -48,6 +48,7 @@ namespace Balloons.Services
                 _balloons.Add(balloon.Color, new List<IBalloon>() { balloon});
             }
             balloonsCount++;
+         
             writerProvider.WriteLine($"Total balloons: {balloonsCount}");
         }
 
@@ -57,35 +58,50 @@ namespace Balloons.Services
             {
                 //get random index by color list
                 var allBalloons=_balloons[balloon.Color].Count;
-                var allArrows = _arrows[balloon.Color].Count;
-                
-                var balloonIndex= gameplayRandomGenerator.GetNumber(0, allBalloons);
-               
-                var arrowIndex= gameplayRandomGenerator.GetNumber(0, allArrows);
-                var arrow = _arrows[balloon.Color][arrowIndex];
-                if (arrow.ArrowThrownCount<arrow.Accurancy)
+             
+                if (CheckArrowCount(balloon.Color))
                 {
-                    //remove random balloon from list
-                    _balloons[balloon.Color].RemoveAt(balloonIndex);
-                    arrow.ArrowThrownCount++;
-                }
-                else
-                {
-                    _arrows[balloon.Color].RemoveAt(arrowIndex);
-                    return false;
-                }
+                    var allArrows = _arrows[balloon.Color].Count;
+                    var balloonIndex = gameplayRandomGenerator.GetNumber(0, allBalloons);
 
-                writerProvider.WriteLine($"Left balloons: {balloonsCount - _balloons.Count}");
-                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows: {_arrows.Count}");
-                return true;
+                    var arrowIndex = gameplayRandomGenerator.GetNumber(0, allArrows);
+                    var arrow = _arrows[balloon.Color][arrowIndex];
+                    if (arrow.ArrowThrownCount < arrow.Accurancy)
+                    {
+                        //remove random balloon from list
+                        _balloons[balloon.Color].RemoveAt(balloonIndex);
+                        arrow.ArrowThrownCount++;
+                        balloonsCount--;
+                    }
+                    else
+                    {
+                        _arrows[balloon.Color].RemoveAt(arrowIndex);
+                        return false;
+                    }
+
+                    writerProvider.WriteLine($"Left balloons: {balloonsCount}");
+                    writerProvider.Write($@"Total balloons: {balloonsCount}, Total arrows: {_arrows.Count}");
+                    return true;
+                }
+                writerProvider.Write($@"Total balloons: {balloonsCount}, Total arrows: {_arrows.Count}");
+                writerProvider.Write("You lost!");
+                return false;
             }
             else
             {
                 writerProvider.WriteLine("No arrows!");
-                writerProvider.Write($@"Total balloons: {_balloons.Count}, Total arrows: {_arrows.Count}");
+                writerProvider.Write($@"Total balloons: {balloonsCount}, Total arrows: {_arrows.Count}");
                 return false;
             }
 
+        }
+        private bool CheckArrowCount(string color)
+        {
+            if (_arrows[color].Count>0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

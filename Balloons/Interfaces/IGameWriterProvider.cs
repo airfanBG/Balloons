@@ -10,5 +10,6 @@ namespace Balloons.Interfaces
     {
         public void WriteLine(string text);
         public void Write(string text, params object[]? args);
+       
     }
 }

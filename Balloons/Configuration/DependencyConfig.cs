@@ -31,16 +31,16 @@ namespace Balloons.Configuration
 
             Bind<CreateBalloonCommand>().ToSelf().InSingletonScope();
             Bind<CreateArrowCommand>().ToSelf().InSingletonScope();
-          
+
             Bind<ICommandFactory>().ToFactory().InSingletonScope();
             Bind<IBalloonFactory>().ToFactory().InSingletonScope();
             Bind<IArrowFactory>().ToFactory().InSingletonScope();
-           
-          
+
+
 
             Bind(typeof(IAddArrow), typeof(IAddBalloon), typeof(IRemoveBalloon)).To<GamePlay>().InSingletonScope();
 
-            ////2
+            //////2
             Bind<ICommand>().ToMethod(context =>
             {
                 Type commandType = (Type)context.Parameters.Single().GetValue(context, null);
